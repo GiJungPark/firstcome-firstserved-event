@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.DisplayName
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.data.redis.core.RedisTemplate
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.Executors
 
@@ -25,9 +26,13 @@ class CouponServiceTest {
     @Autowired
     private lateinit var couponCountRepository: CouponCountRepository
 
+    @Autowired
+    private lateinit var redisTemplate: RedisTemplate<String, String>
+
     @AfterEach
     fun tearDown() {
         couponRepository.deleteAllInBatch()
+        redisTemplate.delete(redisTemplate.keys("coupon_count"))
     }
 
     @DisplayName("쿠폰을 발행한다.")
