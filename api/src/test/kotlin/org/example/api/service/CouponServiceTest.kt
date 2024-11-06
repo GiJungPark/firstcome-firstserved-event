@@ -72,6 +72,8 @@ class CouponServiceTest {
 
         latch.await()
 
+        Thread.sleep(10000)
+
         // then
         val count = couponRepository.count()
 

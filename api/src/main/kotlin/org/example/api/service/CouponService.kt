@@ -1,14 +1,14 @@
 package org.example.api.service
 
-import org.example.api.domain.Coupon
+import org.example.api.producer.CouponCreateProducer
 import org.example.api.repository.CouponCountRepository
 import org.example.api.repository.CouponJpaRepository
 import org.springframework.stereotype.Service
 
 @Service
 class CouponService(
-    private val couponJpaRepository: CouponJpaRepository,
-    private val couponCountRepository: CouponCountRepository
+    private val couponCountRepository: CouponCountRepository,
+    private val couponCreateProducer: CouponCreateProducer
 ) {
 
     fun apply(userId: Long) {
@@ -18,6 +18,6 @@ class CouponService(
             return
         }
 
-        couponJpaRepository.save(Coupon(userId = userId))
+        couponCreateProducer.create(userId)
     }
 }
