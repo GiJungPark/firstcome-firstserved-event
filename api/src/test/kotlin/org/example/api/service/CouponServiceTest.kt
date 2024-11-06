@@ -24,15 +24,18 @@ class CouponServiceTest {
     private lateinit var couponRepository: CouponJpaRepository
 
     @Autowired
-    private lateinit var couponCountRepository: CouponCountRepository
-
-    @Autowired
     private lateinit var redisTemplate: RedisTemplate<String, String>
 
     @AfterEach
     fun tearDown() {
         couponRepository.deleteAllInBatch()
         redisTemplate.delete(redisTemplate.keys("coupon_count"))
+        redisTemplate.delete(redisTemplate.keys("applied_user"))
+
+        while (redisTemplate.keys("coupon_count").isNotEmpty()
+            || redisTemplate.keys("applied_user").isNotEmpty()) {
+            Thread.sleep(100)
+        }
     }
 
     @DisplayName("쿠폰을 발행한다.")
@@ -43,6 +46,8 @@ class CouponServiceTest {
 
         // when
         couponService.apply(userId)
+
+        Thread.sleep(10000)
 
         // then
         val count = couponRepository.count()
@@ -78,5 +83,34 @@ class CouponServiceTest {
         val count = couponRepository.count()
 
         assertThat(count).isEqualTo(100)
+    }
+
+    @DisplayName("쿠폰은 1인당 1개만 발행한다.")
+    @Test
+    fun applyDuplicateUser() {
+        // given
+        val threadCount = 1000
+        val executorService = Executors.newFixedThreadPool(32)
+        val latch = CountDownLatch(threadCount)
+
+        // when
+        for (i in 0..threadCount) {
+            executorService.submit({
+                try {
+                    couponService.apply(1L)
+                } finally {
+                    latch.countDown()
+                }
+            })
+        }
+
+        latch.await()
+
+        Thread.sleep(10000)
+
+        // then
+        val count = couponRepository.count()
+
+        assertThat(count).isEqualTo(1)
     }
 }
