@@ -1,6 +1,7 @@
 package org.example.api.service
 
 import org.assertj.core.api.Assertions.assertThat
+import org.example.api.repository.CouponCountRepository
 import org.example.api.repository.CouponJpaRepository
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
@@ -20,6 +21,9 @@ class CouponServiceTest {
 
     @Autowired
     private lateinit var couponRepository: CouponJpaRepository
+
+    @Autowired
+    private lateinit var couponCountRepository: CouponCountRepository
 
     @AfterEach
     fun tearDown() {
