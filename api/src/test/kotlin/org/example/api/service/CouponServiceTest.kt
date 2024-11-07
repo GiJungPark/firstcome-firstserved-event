@@ -33,7 +33,8 @@ class CouponServiceTest {
         redisTemplate.delete(redisTemplate.keys("applied_user"))
 
         while (redisTemplate.keys("coupon_count").isNotEmpty()
-            || redisTemplate.keys("applied_user").isNotEmpty()) {
+            || redisTemplate.keys("applied_user").isNotEmpty()
+        ) {
             Thread.sleep(100)
         }
     }
@@ -64,7 +65,7 @@ class CouponServiceTest {
         val latch = CountDownLatch(threadCount)
 
         // when
-        for (i in 0..threadCount) {
+        for (i in 0 until threadCount) {
             val userId = i.toLong()
             executorService.submit({
                 try {
@@ -94,7 +95,7 @@ class CouponServiceTest {
         val latch = CountDownLatch(threadCount)
 
         // when
-        for (i in 0..threadCount) {
+        for (i in 0 until threadCount) {
             executorService.submit({
                 try {
                     couponService.apply(1L)
