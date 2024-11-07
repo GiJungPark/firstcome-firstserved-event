@@ -55,7 +55,9 @@
 ## [쿠폰 1인 1매 발행](https://github.com/GiJungPark/firstcome-firstserved-event/pull/4)
 ### 상세
 - Redis의 Set 자료 구조를 사용하여, UserId당 1개의 쿠폰만 발행한다.
+
 <br>
+
 ## [Consumer에서 에러가 발생하는 경우](https://github.com/GiJungPark/firstcome-firstserved-event/pull/5)
 ### 문제점
 - Consumer에서 에러가 발생한 경우, Redis의 발행된 쿠폰의 개수는 증가하지만 실제로 발행된 쿠폰의 개수는 100개보다 적을 수 있다.
