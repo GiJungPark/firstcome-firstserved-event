@@ -7,7 +7,7 @@
 <br>
 
 # 구현
-해당하는 Pull Request 링크가 삽입되어 있습니다.
+*해당하는 Pull Request 링크가 삽입되어 있습니다.*
 ## [쿠폰 발행](https://github.com/GiJungPark/firstcome-firstserved-event/pull/1)
 ### 상세
 - JPA와 MySQL를 사용하여, 쿠폰 발행시 저장한다.
